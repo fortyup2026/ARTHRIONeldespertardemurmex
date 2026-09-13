@@ -1,1 +1,4089 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta
+  name="theme-color"
+  content="#030506"
+>
+
+<title>AETHRION | El Despertar de Murmex</title>
+
+<meta
+  name="description"
+  content="AETHRION: El Despertar de Murmex. Una experiencia narrativa interactiva dentro del mundo de Cetrios."
+>
+
+<style>
+
+/* =========================================================
+   AETHRION · EL DESPERTAR DE MURMEX
+   EXPERIENCIA NARRATIVA INTERACTIVA
+========================================================= */
+
+:root{
+
+  --bg:#030506;
+  --bg2:#070b0e;
+
+  --white:#eef5f7;
+  --muted:#a9b6bb;
+
+  --cyan:#74dcff;
+  --cyan-soft:#c6f3ff;
+
+  --gold:#d4bd84;
+  --gold-dark:#806632;
+
+  --red:#bb514b;
+
+  --line:rgba(255,255,255,.13);
+
+  --glass:rgba(4,9,12,.78);
+
+  --shadow:
+    0 30px 100px
+    rgba(0,0,0,.62);
+
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+  background:var(--bg);
+}
+
+body{
+
+  margin:0;
+
+  color:var(--white);
+
+  background:
+
+    radial-gradient(
+      circle at 50% -10%,
+      #132833,
+      #050809 28%,
+      #030506 68%
+    );
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  overflow-x:hidden;
+
+}
+
+button{
+  font:inherit;
+}
+
+::selection{
+  background:var(--cyan);
+  color:#001218;
+}
+
+
+/* =========================================================
+   TEXTURA
+========================================================= */
+
+.noise{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:200;
+
+  pointer-events:none;
+
+  opacity:.04;
+
+  background-image:
+
+    url(
+      "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E"
+    );
+
+}
+
+
+/* =========================================================
+   BARRA DE PROGRESO
+========================================================= */
+
+.progress-bar{
+
+  position:fixed;
+
+  z-index:500;
+
+  top:0;
+  left:0;
+
+  width:0;
+  height:3px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      var(--gold),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(116,220,255,.9);
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+
+  position:fixed;
+
+  z-index:150;
+
+  top:3px;
+  left:0;
+  right:0;
+
+  height:64px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding:
+
+    0
+    clamp(
+      12px,
+      3vw,
+      34px
+    );
+
+  background:
+
+    linear-gradient(
+      to bottom,
+      rgba(2,4,5,.96),
+      rgba(2,4,5,.55),
+      transparent
+    );
+
+  backdrop-filter:
+    blur(8px);
+
+}
+
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:.72rem;
+
+  letter-spacing:.22em;
+
+  text-transform:uppercase;
+
+}
+
+
+.brand-dot{
+
+  width:9px;
+  height:9px;
+
+  border-radius:50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 18px
+    rgba(116,220,255,.9);
+
+}
+
+
+.header-buttons{
+
+  display:flex;
+
+  gap:8px;
+
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.btn{
+
+  padding:
+    10px 14px;
+
+  border-radius:
+    999px;
+
+  border:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(255,255,255,.06);
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:
+    .25s ease;
+
+}
+
+.btn:hover{
+
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,255,255,.13);
+
+}
+
+.btn.primary{
+
+  color:#120f07;
+
+  font-weight:bold;
+
+  border-color:
+    rgba(255,255,255,.24);
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #e1cf9a,
+      #937944
+    );
+
+}
+
+
+/* =========================================================
+   PORTADA
+========================================================= */
+
+.hero{
+
+  position:relative;
+
+  min-height:
+    100svh;
+
+  display:grid;
+
+  align-items:end;
+
+  overflow:hidden;
+
+  padding:
+
+    13vh
+    clamp(
+      22px,
+      7vw,
+      105px
+    )
+    10vh;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(3,5,6,.02),
+      rgba(3,5,6,.22) 35%,
+      rgba(3,5,6,.98) 97%
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(3,5,6,.91),
+      rgba(3,5,6,.42) 48%,
+      rgba(3,5,6,.04)
+    ),
+
+    url("assets/aethrion.webp")
+    center
+    / cover
+    no-repeat;
+
+}
+
+
+.hero::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+
+    radial-gradient(
+      circle at 72% 22%,
+      rgba(88,207,255,.17),
+      transparent 32%
+    );
+
+  pointer-events:none;
+
+}
+
+
+.hero::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:-1px;
+
+  height:26vh;
+
+  background:
+
+    linear-gradient(
+      transparent,
+      var(--bg)
+    );
+
+}
+
+
+.hero-content{
+
+  position:relative;
+
+  z-index:4;
+
+  max-width:900px;
+
+}
+
+
+.eyebrow{
+
+  color:
+    var(--cyan-soft);
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:.34em;
+
+  font-size:.7rem;
+
+  font-weight:bold;
+
+}
+
+
+.hero h1{
+
+  margin:
+    .22em
+    0
+    .17em;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+
+    clamp(
+      3.5rem,
+      9vw,
+      8.7rem
+    );
+
+  font-weight:normal;
+
+  line-height:.84;
+
+  letter-spacing:
+    -.055em;
+
+  text-shadow:
+    0 12px 45px
+    rgba(0,0,0,.8);
+
+}
+
+
+.hero h1 span{
+
+  display:block;
+
+  margin-top:.43em;
+
+  font-size:.34em;
+
+  letter-spacing:.19em;
+
+  color:#dfca9b;
+
+}
+
+
+.hero-text{
+
+  max-width:730px;
+
+  color:#d8e2e6;
+
+  line-height:1.72;
+
+  font-size:
+
+    clamp(
+      1rem,
+      2vw,
+      1.22rem
+    );
+
+}
+
+
+.hero-actions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:26px;
+
+}
+
+
+.scroll-indicator{
+
+  position:absolute;
+
+  z-index:5;
+
+  right:
+    clamp(
+      16px,
+      5vw,
+      70px
+    );
+
+  bottom:8vh;
+
+  color:#9cacb2;
+
+  font-size:.62rem;
+
+  letter-spacing:.25em;
+
+  writing-mode:
+    vertical-rl;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.scroll-indicator::after{
+
+  content:"";
+
+  display:inline-block;
+
+  width:1px;
+  height:75px;
+
+  margin-top:12px;
+
+  background:
+
+    linear-gradient(
+      var(--cyan),
+      transparent
+    );
+
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro{
+
+  position:relative;
+
+  z-index:5;
+
+  padding:
+
+    13vh
+    22px;
+
+  text-align:center;
+
+}
+
+
+.intro-inner{
+
+  max-width:830px;
+
+  margin:auto;
+
+}
+
+
+.section-label{
+
+  color:
+    var(--gold);
+
+  font-size:.7rem;
+
+  font-weight:bold;
+
+  letter-spacing:.3em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.intro h2,
+.chapter-menu h2,
+.map-section h2,
+.final-section h2{
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+
+    clamp(
+      2.6rem,
+      6vw,
+      5.2rem
+    );
+
+  font-weight:normal;
+
+  margin:
+
+    .2em
+    0
+    .4em;
+
+}
+
+
+.intro p{
+
+  color:
+    var(--muted);
+
+  font-size:
+
+    clamp(
+      1rem,
+      1.7vw,
+      1.18rem
+    );
+
+  line-height:1.85;
+
+}
+
+
+/* =========================================================
+   ÍNDICE
+========================================================= */
+
+.chapter-menu{
+
+  padding:
+
+    4vh
+    clamp(
+      18px,
+      5vw,
+      70px
+    )
+    12vh;
+
+}
+
+
+.chapter-menu-inner{
+
+  max-width:1250px;
+
+  margin:auto;
+
+}
+
+
+.chapter-grid{
+
+  display:grid;
+
+  grid-template-columns:
+
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:10px;
+
+  margin-top:30px;
+
+}
+
+
+.chapter-btn{
+
+  min-height:118px;
+
+  padding:16px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:flex-end;
+
+  text-align:left;
+
+  color:white;
+
+  border:
+
+    1px solid
+    var(--line);
+
+  border-radius:15px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.012)
+    );
+
+  cursor:pointer;
+
+  transition:.25s ease;
+
+}
+
+
+.chapter-btn:hover{
+
+  transform:
+    translateY(-4px);
+
+  border-color:
+    rgba(116,220,255,.4);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(116,220,255,.12),
+      rgba(255,255,255,.02)
+    );
+
+}
+
+
+.chapter-btn small{
+
+  color:
+    var(--gold);
+
+  letter-spacing:.16em;
+
+  font-size:.66rem;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.chapter-btn strong{
+
+  margin-top:8px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:1.12rem;
+
+  font-weight:normal;
+
+}
+
+
+/* =========================================================
+   CAPÍTULOS
+========================================================= */
+
+.chapter{
+
+  min-height:92vh;
+
+  position:relative;
+
+  display:grid;
+
+  align-items:end;
+
+  isolation:isolate;
+
+  overflow:hidden;
+
+  padding:
+
+    14vh
+    clamp(
+      22px,
+      8vw,
+      120px
+    )
+    10vh;
+
+  background:
+
+    center
+    / cover
+    no-repeat;
+
+}
+
+
+.chapter::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:-1;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(2,4,5,.94),
+      rgba(2,4,5,.62) 47%,
+      rgba(2,4,5,.15)
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(2,4,5,.06),
+      rgba(2,4,5,.96) 92%
+    );
+
+}
+
+
+.chapter::after{
+
+  content:"";
+
+  position:absolute;
+
+  z-index:-1;
+
+  left:0;
+  right:0;
+  bottom:-1px;
+
+  height:190px;
+
+  background:
+
+    linear-gradient(
+      transparent,
+      var(--bg)
+    );
+
+}
+
+
+.chapter-content{
+
+  max-width:780px;
+
+}
+
+
+.chapter-number{
+
+  color:
+    var(--gold);
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:.76rem;
+
+  letter-spacing:.22em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.chapter h2{
+
+  margin:
+
+    .2em
+    0
+    .27em;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+
+    clamp(
+      2.8rem,
+      6vw,
+      5.7rem
+    );
+
+  font-weight:normal;
+
+  line-height:.93;
+
+  letter-spacing:
+    -.035em;
+
+}
+
+
+.chapter p{
+
+  max-width:730px;
+
+  color:#d3dee2;
+
+  line-height:1.82;
+
+  font-size:
+
+    clamp(
+      1rem,
+      1.55vw,
+      1.17rem
+    );
+
+}
+
+
+.quote{
+
+  margin-top:25px;
+
+  max-width:650px;
+
+  padding-left:20px;
+
+  border-left:
+
+    2px solid
+    var(--cyan);
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+
+    clamp(
+      1.25rem,
+      2vw,
+      1.62rem
+    );
+
+  line-height:1.5;
+
+}
+
+
+.location{
+
+  margin-top:24px;
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  color:#a0adb2;
+
+  font-size:.74rem;
+
+  letter-spacing:.14em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.location::before{
+
+  content:"";
+
+  width:28px;
+
+  height:1px;
+
+  background:
+    var(--gold);
+
+}
+
+
+/* =========================================================
+   MURMEX
+========================================================= */
+
+.murmex-section{
+
+  min-height:
+    100svh;
+
+  position:relative;
+
+  overflow:hidden;
+
+  display:grid;
+
+  place-items:center;
+
+  text-align:center;
+
+  padding:
+
+    9vh
+    20px;
+
+  background:
+
+    radial-gradient(
+      ellipse at 50% 40%,
+      #10232e 0%,
+      #050809 43%,
+      #010203 77%
+    );
+
+}
+
+
+.waterfall{
+
+  position:absolute;
+
+  top:-10%;
+  bottom:-10%;
+
+  width:24%;
+
+  filter:
+    blur(2px);
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(126,211,250,.08),
+      rgba(229,248,255,.5),
+      rgba(96,191,235,.15),
+      transparent
+    );
+
+  animation:
+
+    waterfall
+    5s
+    ease-in-out
+    infinite;
+
+}
+
+
+.waterfall.left{
+  left:4%;
+}
+
+
+.waterfall.center{
+
+  left:38%;
+
+  opacity:.32;
+
+}
+
+
+.waterfall.right{
+
+  right:4%;
+
+  animation-delay:
+    -2s;
+
+}
+
+
+.murmex-mist{
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:-5%;
+
+  height:42%;
+
+  filter:
+    blur(28px);
+
+  background:
+
+    radial-gradient(
+      ellipse at center,
+      rgba(171,229,255,.22),
+      transparent 67%
+    );
+
+}
+
+
+.murmex-eyes{
+
+  position:absolute;
+
+  top:30%;
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  display:flex;
+
+  gap:
+
+    clamp(
+      110px,
+      18vw,
+      230px
+    );
+
+}
+
+
+.murmex-eye{
+
+  width:
+
+    clamp(
+      27px,
+      4vw,
+      45px
+    );
+
+  height:
+
+    clamp(
+      10px,
+      1.6vw,
+      18px
+    );
+
+  border-radius:50%;
+
+  background:
+    #c7f4ff;
+
+  box-shadow:
+
+    0 0 10px white,
+
+    0 0 35px
+    #61d3ff,
+
+    0 0 100px
+    rgba(50,180,255,.8);
+
+}
+
+
+.murmex-content{
+
+  position:relative;
+
+  z-index:5;
+
+  max-width:780px;
+
+  margin-top:46vh;
+
+}
+
+
+.murmex-content h2{
+
+  margin:
+    .12em
+    0;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-weight:normal;
+
+  font-size:
+
+    clamp(
+      3.2rem,
+      8vw,
+      6.5rem
+    );
+
+}
+
+
+.murmex-content p{
+
+  color:#c6d4da;
+
+  line-height:1.78;
+
+}
+
+
+.murmex-voice{
+
+  margin:
+    24px
+    0;
+
+  color:
+    var(--cyan-soft);
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+
+    clamp(
+      1.3rem,
+      2.2vw,
+      1.9rem
+    );
+
+}
+
+
+/* =========================================================
+   BARRERA FINAL
+========================================================= */
+
+.magic-barrier{
+
+  position:absolute;
+
+  z-index:1;
+
+  right:-13%;
+  top:-15%;
+
+  width:67%;
+  height:130%;
+
+  border-radius:50%;
+
+  border-left:
+
+    2px solid
+    rgba(122,225,255,.55);
+
+  background:
+
+    radial-gradient(
+      ellipse at left,
+      rgba(127,221,255,.13),
+      rgba(43,103,134,.06) 30%,
+      rgba(0,0,0,.08) 53%,
+      transparent 68%
+    );
+
+  box-shadow:
+
+    -20px 0 48px
+    rgba(75,200,255,.18),
+
+    inset 20px 0 70px
+    rgba(0,0,0,.45);
+
+  animation:
+
+    barrierPulse
+    3s
+    ease-in-out
+    infinite;
+
+}
+
+
+.magic-barrier::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:4%;
+
+  border-radius:50%;
+
+  opacity:.55;
+
+  background:
+
+    repeating-linear-gradient(
+      115deg,
+      transparent 0 31px,
+      rgba(0,0,0,.25) 32px 36px,
+      transparent 37px 69px
+    );
+
+}
+
+
+/* =========================================================
+   MAPA
+========================================================= */
+
+.map-section{
+
+  padding:
+
+    13vh
+    clamp(
+      18px,
+      6vw,
+      80px
+    );
+
+  background:
+
+    linear-gradient(
+      var(--bg),
+      #091014,
+      var(--bg)
+    );
+
+}
+
+
+.map-inner{
+
+  max-width:1300px;
+
+  margin:auto;
+
+}
+
+
+.map-description{
+
+  max-width:800px;
+
+  color:
+    var(--muted);
+
+  line-height:1.8;
+
+}
+
+
+.map-wrap{
+
+  position:relative;
+
+  margin-top:30px;
+
+  overflow:hidden;
+
+  border:
+
+    1px solid
+    var(--line);
+
+  border-radius:23px;
+
+  background:#050709;
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.map-wrap img{
+
+  width:100%;
+
+  display:block;
+
+  filter:
+
+    brightness(.84)
+    saturate(.9)
+    contrast(1.04);
+
+}
+
+
+.map-pin{
+
+  position:absolute;
+
+  width:19px;
+  height:19px;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:50%;
+
+  border:
+    2px solid white;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 0 7px
+    rgba(116,220,255,.17),
+
+    0 0 27px
+    rgba(116,220,255,.8);
+
+  cursor:pointer;
+
+}
+
+
+.map-pin.danger{
+
+  background:
+    var(--red);
+
+  box-shadow:
+
+    0 0 0 7px
+    rgba(187,81,75,.17),
+
+    0 0 27px
+    rgba(187,81,75,.78);
+
+}
+
+
+.map-pin span{
+
+  position:absolute;
+
+  top:25px;
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  white-space:nowrap;
+
+  pointer-events:none;
+
+  opacity:0;
+
+  padding:
+    7px
+    10px;
+
+  border:
+
+    1px solid
+    var(--line);
+
+  border-radius:8px;
+
+  background:
+    rgba(2,5,7,.96);
+
+  color:white;
+
+  font-size:.7rem;
+
+  transition:.2s;
+
+}
+
+
+.map-pin:hover span{
+  opacity:1;
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+.final-section{
+
+  padding:
+
+    15vh
+    22px;
+
+  text-align:center;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 0,
+      rgba(86,203,255,.11),
+      transparent 38%
+    ),
+
+    #020304;
+
+}
+
+
+.final-inner{
+
+  max-width:800px;
+
+  margin:auto;
+
+}
+
+
+.final-inner p{
+
+  color:#bac6ca;
+
+  line-height:1.82;
+
+}
+
+
+.final-symbol{
+
+  position:relative;
+
+  width:78px;
+  height:78px;
+
+  margin:
+
+    35px
+    auto;
+
+  border-radius:50%;
+
+  border:
+
+    1px solid
+    rgba(198,243,255,.33);
+
+  box-shadow:
+
+    0 0 50px
+    rgba(76,201,255,.13);
+
+}
+
+
+.final-symbol::before,
+.final-symbol::after{
+
+  content:"";
+
+  position:absolute;
+
+  background:
+
+    rgba(198,243,255,.45);
+
+  left:50%;
+  top:12%;
+  bottom:12%;
+
+  width:1px;
+
+}
+
+
+.final-symbol::after{
+  transform:rotate(90deg);
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+
+  position:fixed;
+
+  z-index:1000;
+
+  inset:0;
+
+  display:none;
+
+  place-items:center;
+
+  padding:20px;
+
+  background:
+    rgba(0,0,0,.88);
+
+  backdrop-filter:
+    blur(12px);
+
+}
+
+
+.modal.open{
+  display:grid;
+}
+
+
+.modal-card{
+
+  width:
+
+    min(
+      900px,
+      96vw
+    );
+
+  overflow:hidden;
+
+  border:
+
+    1px solid
+    var(--line);
+
+  border-radius:20px;
+
+  background:
+    #080c0f;
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.modal-image{
+
+  height:
+
+    min(
+      52vh,
+      500px
+    );
+
+  background:
+
+    center
+    / cover
+    no-repeat;
+
+}
+
+
+.modal-body{
+
+  padding:23px;
+
+}
+
+
+.modal-body h3{
+
+  margin:
+    0
+    0
+    10px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:2rem;
+
+  font-weight:normal;
+
+}
+
+
+.modal-body p{
+
+  margin:0;
+
+  color:#b8c5ca;
+
+  line-height:1.7;
+
+}
+
+
+.modal-close{
+
+  position:absolute;
+
+  top:18px;
+  right:18px;
+
+  width:44px;
+  height:44px;
+
+  border-radius:50%;
+
+  border:
+
+    1px solid
+    var(--line);
+
+  background:
+    rgba(0,0,0,.68);
+
+  color:white;
+
+  font-size:1.25rem;
+
+  cursor:pointer;
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{
+
+  opacity:0;
+
+  transform:
+    translateY(30px);
+
+  transition:
+
+    opacity
+    .85s ease,
+
+    transform
+    .85s ease;
+
+}
+
+
+.reveal.visible{
+
+  opacity:1;
+
+  transform:none;
+
+}
+
+
+/* =========================================================
+   ANIMACIONES
+========================================================= */
+
+@keyframes waterfall{
+
+  0%,
+  100%{
+
+    transform:
+
+      translateY(-2%)
+      scaleX(.95);
+
+    opacity:.52;
+
+  }
+
+
+  50%{
+
+    transform:
+
+      translateY(2%)
+      scaleX(1.05);
+
+    opacity:.82;
+
+  }
+
+}
+
+
+@keyframes barrierPulse{
+
+  0%,
+  100%{
+    filter:brightness(.9);
+  }
+
+  50%{
+    filter:brightness(1.4);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px){
+
+  .chapter-grid{
+
+    grid-template-columns:
+
+      repeat(
+        2,
+        1fr
+      );
+
+  }
+
+
+  .chapter{
+
+    min-height:83vh;
+
+  }
+
+
+  .chapter::before{
+
+    background:
+
+      linear-gradient(
+        180deg,
+        rgba(2,4,5,.1),
+        rgba(2,4,5,.96) 69%
+      );
+
+  }
+
+
+  .map-wrap{
+
+    overflow-x:auto;
+
+  }
+
+
+  .map-wrap img{
+
+    min-width:760px;
+
+  }
+
+
+  .map-pin{
+
+    display:none;
+
+  }
+
+
+  .magic-barrier{
+
+    width:95%;
+
+    right:-48%;
+
+  }
+
+
+  .murmex-eyes{
+
+    gap:34vw;
+
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  header{
+
+    padding:
+      0 10px;
+
+  }
+
+
+  .brand{
+
+    font-size:.59rem;
+
+    letter-spacing:.14em;
+
+  }
+
+
+  .header-map{
+
+    display:none;
+
+  }
+
+
+  .btn{
+
+    padding:
+      8px
+      10px;
+
+    font-size:.78rem;
+
+  }
+
+
+  .hero{
+
+    background-position:
+      57%
+      center;
+
+  }
+
+
+  .hero h1{
+
+    font-size:
+      3.55rem;
+
+  }
+
+
+  .hero h1 span{
+
+    font-size:.31em;
+
+  }
+
+
+  .scroll-indicator{
+
+    display:none;
+
+  }
+
+
+  .chapter-grid{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .chapter-btn{
+
+    min-height:100px;
+
+    padding:12px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="noise"></div>
+
+<div
+  class="progress-bar"
+  id="progressBar">
+</div>
+
+
+<header>
+
+  <div class="brand">
+
+    <span class="brand-dot"></span>
+
+    AETHRION · CETRIOS
+
+  </div>
+
+
+  <div class="header-buttons">
+
+
+    <button
+      class="btn header-map"
+      onclick="scrollToSection('mapa')">
+
+      Mapa
+
+    </button>
+
+
+    <button
+      class="btn"
+      id="audioButton">
+
+      ♫ Ambiente
+
+    </button>
+
+
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     PORTADA
+========================================================= -->
+
+<section
+  class="hero"
+  id="inicio">
+
+
+  <div
+    class="hero-content reveal">
+
+
+    <div class="eyebrow">
+
+      UNA HISTORIA DEL MUNDO ECO
+
+    </div>
+
+
+    <h1>
+
+      AETHRION
+
+      <span>
+
+        EL DESPERTAR DE MURMEX
+
+      </span>
+
+    </h1>
+
+
+    <p class="hero-text">
+
+      Un rayo turquesa cruza Cetrios.
+
+      Lomira cae.
+
+      Las entidades quedan libres.
+
+      Mientras Aethrion intenta resistir,
+      tres prisioneros reciben
+      una misión imposible:
+
+      atravesar el Desierto de Kael
+      y encontrar a una presencia
+      que el mundo convirtió en leyenda.
+
+    </p>
+
+
+    <div class="hero-actions">
+
+
+      <button
+        class="btn primary"
+        onclick="scrollToSection('capitulo1')">
+
+        Entrar a la historia
+
+      </button>
+
+
+      <button
+        class="btn"
+        onclick="scrollToSection('mapa')">
+
+        Explorar Cetrios
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+
+  <div class="scroll-indicator">
+
+    DESCENDER
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     INTRO
+========================================================= -->
+
+<section class="intro">
+
+
+  <div
+    class="intro-inner reveal">
+
+
+    <div class="section-label">
+
+      CETRIOS
+
+    </div>
+
+
+    <h2>
+
+      La peor semana
+      acaba de comenzar
+
+    </h2>
+
+
+    <p>
+
+      Esta experiencia transforma
+      El Despertar de Murmex
+      en un recorrido visual por
+      Aethrion, Lomira,
+      el Desierto de Kael
+      y las ruinas donde duerme Murmex.
+
+      No reemplaza el libro.
+
+      Lo convierte en un mundo
+      que se puede recorrer.
+
+    </p>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     MENÚ
+========================================================= -->
+
+<section class="chapter-menu">
+
+
+  <div class="chapter-menu-inner">
+
+
+    <div class="section-label">
+
+      LA HISTORIA
+
+    </div>
+
+
+    <h2>
+
+      13 capítulos
+
+    </h2>
+
+
+    <div
+      class="chapter-grid"
+      id="chapterGrid">
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CAPÍTULOS GENERADOS CON JAVASCRIPT
+========================================================= -->
+
+<main id="story"></main>
+
+
+<!-- =========================================================
+     MAPA
+========================================================= -->
+
+<section
+  class="map-section"
+  id="mapa">
+
+
+  <div class="map-inner">
+
+
+    <div class="section-label">
+
+      MAPA OFICIAL
+
+    </div>
+
+
+    <h2>
+
+      Cetrios
+
+    </h2>
+
+
+    <p class="map-description">
+
+      Los lugares utilizados
+      en esta historia conservan
+      la geografía del mapa oficial.
+
+      Aethrion permanece
+      en el corazón del continente.
+
+      Lomira forma parte
+      de La Roca del Guardián.
+
+      El Desierto de Kael
+      se encuentra al sur.
+
+      Y las Islas de Tronox
+      permanecen frente
+      a la costa oriental.
+
+    </p>
+
+
+    <div class="map-wrap">
+
+
+      <img
+        src="assets/mapa.webp"
+        alt="Mapa oficial de Cetrios"
+      >
+
+
+      <!-- AETHRION -->
+
+      <button
+
+        class="map-pin"
+
+        data-place="aethrion"
+
+        style="
+          left:47.9%;
+          top:46.7%;
+        ">
+
+
+        <span>
+
+          Aethrion
+
+        </span>
+
+
+      </button>
+
+
+      <!-- LOMIRA -->
+
+      <button
+
+        class="map-pin danger"
+
+        data-place="lomira"
+
+        style="
+          left:35.4%;
+          top:80.3%;
+        ">
+
+
+        <span>
+
+          La Roca del Guardián · Lomira
+
+        </span>
+
+
+      </button>
+
+
+      <!-- KAEL -->
+
+      <button
+
+        class="map-pin danger"
+
+        data-place="kael"
+
+        style="
+          left:58.2%;
+          top:78.3%;
+        ">
+
+
+        <span>
+
+          Desierto de Kael
+
+        </span>
+
+
+      </button>
+
+
+      <!-- TRONOX -->
+
+      <button
+
+        class="map-pin"
+
+        data-place="tronox"
+
+        style="
+          left:66%;
+          top:42.2%;
+        ">
+
+
+        <span>
+
+          Islas de Tronox
+
+        </span>
+
+
+      </button>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINAL
+========================================================= -->
+
+<section class="final-section">
+
+
+  <div
+    class="final-inner reveal">
+
+
+    <div class="section-label">
+
+      FINAL
+
+    </div>
+
+
+    <h2>
+
+      Aethrion sigue allí
+
+    </h2>
+
+
+    <div class="final-symbol"></div>
+
+
+    <p>
+
+      Murmex vuelve a dormir.
+
+      Las entidades regresan
+      a su prisión.
+
+      Pero los reyes han muerto.
+
+      Vertiem ocupa el poder.
+
+      Fausok permanece atrapado.
+
+      Y una barrera imposible
+      divide Aethrion del resto
+      de Cetrios.
+
+    </p>
+
+
+    <p>
+
+      Darian,
+      Nyra y Lorik
+      tienen una sola decisión.
+
+    </p>
+
+
+    <div
+      class="quote"
+      style="
+        margin:
+          28px auto;
+        max-width:560px;
+        text-align:left;
+      ">
+
+      Entonces volvemos a entrar.
+
+    </div>
+
+
+    <button
+      class="btn primary"
+      onclick="scrollToSection('inicio')">
+
+      Volver al comienzo
+
+    </button>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     MODAL MAPA
+========================================================= -->
+
+<div
+  class="modal"
+  id="placeModal">
+
+
+  <button
+    class="modal-close"
+    id="modalClose">
+
+    ×
+
+  </button>
+
+
+  <div class="modal-card">
+
+
+    <div
+      class="modal-image"
+      id="modalImage">
+
+    </div>
+
+
+    <div class="modal-body">
+
+
+      <h3 id="modalTitle">
+      </h3>
+
+
+      <p id="modalDescription">
+      </p>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     AUDIO
+========================================================= -->
+
+<audio
+  id="ambientAudio"
+  loop
+  preload="none">
+
+  <source
+    src="ambiente-cetrios.mp3"
+    type="audio/mpeg"
+  >
+
+</audio>
+
+
+<script>
+
+/* =========================================================
+   DATOS DE LOS 13 CAPÍTULOS
+========================================================= */
+
+const chapters = [
+
+{
+
+  title:
+    "El cierre",
+
+  image:
+    "guardian-lomira",
+
+  location:
+    "La Roca del Guardián · Lomira",
+
+  paragraphs:[
+
+    `El hombre que acomodaba frutas
+    frente al mercado principal
+    fue el primero en señalar el cielo.
+
+    Un rayo turquesa atravesaba Cetrios
+    como una cicatriz brillante.`,
+
+    `Muy lejos de Aethrion,
+    los custodios de Lomira
+    sintieron el primer golpe.
+
+    No venía de afuera.
+
+    Venía desde adentro.`,
+
+    `Las paredes cedieron.
+
+    Las entidades despertaron
+    y comenzaron a desplazarse
+    hacia el portal multiversal.`,
+
+    `Cuando el portal empezó a cerrarse,
+    algunas intentaron alcanzarlo.
+
+    Una no llegó.
+
+    Las demás se detuvieron.
+
+    Miraron el portal.
+
+    Miraron los restos.
+
+    Miraron Aethrion.`
+
+  ],
+
+  quote:
+    "Ya no intentaban escapar. Ahora venían hacia ellos."
+
+},
+
+
+{
+
+  title:
+    "El Salón Rojo",
+
+  image:
+    "aethrion",
+
+  location:
+    "Aethrion · Palacio",
+
+  paragraphs:[
+
+    `Aethrion resistía.
+
+    Las barreras de Eco
+    protegían calles,
+    puentes y refugios.
+
+    Pero las entidades
+    no peleaban como animales.
+
+    Observaban.
+
+    Aprendían.`,
+
+    `El rey y la reina
+    convocaron el Salón Rojo,
+    el lugar reservado
+    para las decisiones
+    capaces de cambiar
+    el destino del reino.`,
+
+    `Fausok habló de una presencia
+    antigua dormida
+    bajo las ruinas del Desierto de Kael.
+
+    Su nombre era Murmex.`
+
+  ],
+
+  quote:
+    "Había otra opción."
+
+},
+
+
+{
+
+  title:
+    "Los elegidos equivocados",
+
+  image:
+    "aethrion",
+
+  location:
+    "Aethrion",
+
+  paragraphs:[
+
+    `Darian estaba preso
+    por una pelea callejera
+    y por utilizar su Eco
+    de forma violenta.`,
+
+    `Nyra había aprendido
+    a robar antes que a pedir.`,
+
+    `Lorik traficaba
+    antigüedades
+    y podía percibir
+    rastros dentro
+    de objetos antiguos.`,
+
+    `No fueron elegidos
+    porque fueran nobles.
+
+    Fueron elegidos
+    porque cada uno servía
+    para algo.`,
+
+    `A cambio de la misión,
+    recibirían libertad.
+
+    Y sus familias
+    serían protegidas.`
+
+  ],
+
+  quote:
+    "No irán por honor. Irán porque necesitan volver."
+
+},
+
+
+{
+
+  title:
+    "Primeras huellas",
+
+  image:
+    "kael",
+
+  location:
+    "Desierto de Kael",
+
+  paragraphs:[
+
+    `Aethrion quedó atrás.
+
+    Primero desaparecieron
+    los caminos.
+
+    Después las plantas.
+
+    Finalmente,
+    el mundo se redujo
+    a arena,
+    viento
+    y horizonte.`,
+
+    `Nyra llevaba consigo
+    una fotografía
+    de su hermana menor.
+
+    Darian pensaba
+    en la suya.
+
+    Lorik seguía
+    una pieza metálica
+    que vibraba
+    hacia el sudeste.`,
+
+    `La arena comenzó
+    a moverse.
+
+    Algo nadaba
+    debajo de sus pies.`,
+
+    `Las primeras criaturas
+    surgieron formadas
+    por arena compacta,
+    restos óseos
+    y Eco corrupto.`
+
+  ]
+
+},
+
+
+{
+
+  title:
+    "Bajo la arena",
+
+  image:
+    "kael",
+
+  location:
+    "Desierto de Kael",
+
+  paragraphs:[
+
+    `El desierto no volvió
+    a atacarlos enseguida.
+
+    Eso era peor.`,
+
+    `Las criaturas
+    parecían observarlos.
+
+    Medían quién
+    se cansaba primero.
+
+    Quién se quedaba atrás.
+
+    Quién era más fácil
+    de separar.`,
+
+    `Lorik finalmente cayó.
+
+    No podía continuar.`,
+
+    `Le pidió a los otros
+    que siguieran sin él.
+
+    Nyra se negó.
+
+    Darian se agachó
+    frente a Lorik
+    y le ordenó subir.`
+
+  ],
+
+  quote:
+    "Si uno caía, los otros no seguirían como si nada."
+
+},
+
+
+{
+
+  title:
+    "Ecos en la arena",
+
+  image:
+    "kael",
+
+  location:
+    "Ruinas del Desierto de Kael",
+
+  paragraphs:[
+
+    `Las primeras ruinas
+    aparecieron bajo la arena.
+
+    Restos de caminos.
+
+    Columnas.
+
+    Símbolos.
+
+    Expediciones
+    que habían llegado
+    antes que ellos.`,
+
+    `Después comenzaron
+    las visiones.`,
+
+    `Nyra escuchó
+    la voz de su hermana.
+
+    Darian vio
+    una figura imposible.
+
+    Lorik soñó
+    con una puerta,
+    agua
+    y una caída
+    interminable.`,
+
+    `Al caer el día,
+    una ciudad enterrada
+    apareció detrás
+    de una duna.`,
+
+    `No estaba en el mapa.`
+
+  ],
+
+  quote:
+    "Algo dentro de aquellas ruinas también los había encontrado a ellos."
+
+},
+
+
+{
+
+  title:
+    "Voces del Desierto",
+
+  image:
+    "kael",
+
+  location:
+    "Ruinas antiguas",
+
+  paragraphs:[
+
+    `Las ruinas
+    no querían matarlos
+    de inmediato.
+
+    Querían separarlos.`,
+
+    `Nyra vio
+    a su hermana.
+
+    Darian volvió
+    a enfrentarse
+    con su propia violencia.
+
+    Lorik siguió
+    símbolos
+    y sonidos de agua
+    que no podían existir.`,
+
+    `Cuando volvieron
+    a encontrarse,
+    entendieron
+    que la criatura
+    utilizaba recuerdos,
+    culpa
+    y deseos.`,
+
+    `La respuesta
+    fue hacer lo contrario
+    de aquello
+    que el monstruo buscaba.`,
+
+    `Unieron sus Ecos.`
+
+  ],
+
+  quote:
+    "Durante unos segundos dejaron de estar solos dentro de sus propias cabezas."
+
+},
+
+
+{
+
+  title:
+    "Aethrion resiste",
+
+  image:
+    "aethrion",
+
+  location:
+    "Aethrion",
+
+  paragraphs:[
+
+    `Aethrion llevaba días
+    sin dormir.`,
+
+    `Las entidades
+    aparecían
+    desde túneles,
+    atravesaban suelos
+    y descendían
+    desde los techos.`,
+
+    `El rey utilizó
+    un poder de luz
+    capaz de deshacer
+    una criatura
+    desde adentro.`,
+
+    `Pero cada defensa
+    exigía más personas,
+    más Eco
+    y más sacrificio.`,
+
+    `Entonces llegó Vertiem.
+
+    Venía desde
+    las Islas de Tronox
+    con hombres,
+    barcos
+    y refuerzos.`,
+
+    `Todavía no parecía
+    un enemigo.`
+
+  ]
+
+},
+
+
+{
+
+  title:
+    "Bajo las Ruinas",
+
+  image:
+    "kael",
+
+  location:
+    "Ruinas de Kael",
+
+  paragraphs:[
+
+    `La estructura
+    semienterrada
+    parecía una herida
+    abierta en el desierto.`,
+
+    `El suelo descendía
+    hacia una puerta gigantesca
+    cubierta por canales
+    tallados en piedra.`,
+
+    `No se abría con fuerza.
+
+    Se abría con agua.`,
+
+    `Gota a gota,
+    los canales
+    comenzaron a funcionar.`,
+
+    `Más abajo
+    aparecieron pasadizos,
+    restos de expediciones
+    y fragmentos
+    de monumentos gigantes.`,
+
+    `El agua
+    les llegó primero
+    a los tobillos.
+
+    Después a las rodillas.`,
+
+    `Finalmente,
+    el pasadizo terminó.`,
+
+    `No encontraron
+    una cámara.
+
+    Encontraron
+    un mundo escondido.`
+
+  ]
+
+},
+
+
+{
+
+  title:
+    "Murmex",
+
+  special:
+    true,
+
+  paragraphs:[
+
+    `La sala era tan grande
+    que las paredes
+    desaparecían
+    dentro de la oscuridad.`,
+
+    `Cataratas enormes
+    caían desde alturas
+    invisibles.`,
+
+    `Entonces el agua
+    comenzó a disminuir.`,
+
+    `Detrás de la cortina
+    apareció oscuridad.`,
+
+    `Y dentro
+    de esa oscuridad,
+    dos puntos azules
+    comenzaron a encenderse.`,
+
+    `No era posible
+    distinguir
+    un cuerpo completo.`,
+
+    `Solo una presencia.
+
+    Inmensa.
+
+    Antigua.
+
+    Despierta.`
+
+  ],
+
+  quote:
+    "Duermo. Eso no significa ausencia."
+
+},
+
+
+{
+
+  title:
+    "El Rey Oscuro",
+
+  image:
+    "aethrion",
+
+  location:
+    "Aethrion",
+
+  paragraphs:[
+
+    `Mientras Murmex
+    respondía desde Kael,
+    Aethrion estaba
+    llegando a su límite.`,
+
+    `El campanario cayó.`,
+
+    `Después,
+    todas las entidades
+    se detuvieron.`,
+
+    `Algo más antiguo
+    acababa de despertar.`,
+
+    `Los monstruos
+    fueron arrastrados
+    hacia Lomira.`,
+
+    `La ciudad sobrevivió.`,
+
+    `Entonces Vertiem
+    entró al salón real.`,
+
+    `Mató al rey.`,
+
+    `Mató a la reina.`,
+
+    `Capturó a Fausok.`,
+
+    `Y ocupó el trono.`
+
+  ],
+
+  quote:
+    "Aethrion había sobrevivido a los monstruos. Pero acababa de perderse a sí misma."
+
+},
+
+
+{
+
+  title:
+    "Después del Despertar",
+
+  image:
+    "kael",
+
+  location:
+    "Desierto de Kael",
+
+  paragraphs:[
+
+    `Una luz
+    explotó desde el agua.`,
+
+    `Cuando Nyra
+    abrió los ojos,
+    ya no había cataratas.`,
+
+    `Había arena.
+
+    Sol.
+
+    Viento.`,
+
+    `Los tres seguían mojados,
+    pero las ruinas
+    habían desaparecido.`,
+
+    `En el regreso
+    encontraron
+    a un sobreviviente
+    de Aethrion.`,
+
+    `Él confirmó
+    que las entidades
+    habían desaparecido.`,
+
+    `Después murió.`,
+
+    `En el horizonte
+    comenzó a aparecer
+    humo.`
+
+  ]
+
+},
+
+
+{
+
+  title:
+    "La Barrera",
+
+  image:
+    "aethrion",
+
+  location:
+    "Aethrion central",
+
+  barrier:
+    true,
+
+  paragraphs:[
+
+    `El regreso
+    no se parecía
+    a una victoria.`,
+
+    `El campanario
+    ya no existía.`,
+
+    `Las murallas
+    estaban abiertas.
+
+    Las torres,
+    partidas.`,
+
+    `El rey
+    y la reina
+    habían muerto.`,
+
+    `Fausok
+    seguía dentro.`,
+
+    `Una barrera
+    rodeaba
+    Aethrion central.`,
+
+    `Luz.
+
+    Grietas negras.
+
+    Sombra.
+
+    Todo coexistiendo
+    dentro de una pared
+    que parecía respirar.`,
+
+    `Nyra intentó tocarla.`,
+
+    `La barrera
+    la lanzó
+    varios metros
+    hacia atrás.`
+
+  ],
+
+  quote:
+    "Fausok sigue ahí. Entonces volvemos a entrar."
+
+}
+
+];
+
+
+/* =========================================================
+   GENERAR MENÚ Y CAPÍTULOS
+========================================================= */
+
+const story =
+document.getElementById(
+  "story"
+);
+
+const chapterGrid =
+document.getElementById(
+  "chapterGrid"
+);
+
+
+chapters.forEach(
+  (chapter,index)=>{
+
+    const number =
+    String(
+      index + 1
+    )
+    .padStart(
+      2,
+      "0"
+    );
+
+
+    /* MENÚ */
+
+    const menuButton =
+    document.createElement(
+      "button"
+    );
+
+    menuButton.className =
+      "chapter-btn";
+
+    menuButton.innerHTML =
+    `
+      <small>
+        Capítulo ${number}
+      </small>
+
+      <strong>
+        ${chapter.title}
+      </strong>
+    `;
+
+    menuButton.onclick =
+    ()=>{
+
+      scrollToSection(
+        `capitulo${index+1}`
+      );
+
+    };
+
+    chapterGrid
+    .appendChild(
+      menuButton
+    );
+
+
+    /* MURMEX */
+
+    if(
+      chapter.special
+    ){
+
+      const section =
+      document.createElement(
+        "section"
+      );
+
+      section.className =
+        "murmex-section";
+
+      section.id =
+        `capitulo${index+1}`;
+
+      section.innerHTML =
+      `
+
+        <div class="waterfall left">
+        </div>
+
+        <div class="waterfall center">
+        </div>
+
+        <div class="waterfall right">
+        </div>
+
+        <div class="murmex-mist">
+        </div>
+
+
+        <div class="murmex-eyes">
+
+          <span class="murmex-eye">
+          </span>
+
+          <span class="murmex-eye">
+          </span>
+
+        </div>
+
+
+        <div class="murmex-content reveal">
+
+
+          <div class="chapter-number">
+
+            Capítulo ${number}
+
+          </div>
+
+
+          <h2>
+
+            Murmex
+
+          </h2>
+
+
+          ${
+
+            chapter.paragraphs
+
+            .map(
+
+              paragraph =>
+
+              `<p>${paragraph}</p>`
+
+            )
+
+            .join("")
+
+          }
+
+
+          <div class="murmex-voice">
+
+            “${chapter.quote}”
+
+          </div>
+
+
+          <p>
+
+            Darian, Nyra y Lorik
+            no le piden
+            que cambie el pasado.
+
+            No le piden
+            que reviva a nadie.
+
+            Solo que cierre
+            aquello
+            que escapó.
+
+          </p>
+
+
+          <p>
+
+            Murmex acepta.
+
+          </p>
+
+
+        </div>
+
+      `;
+
+
+      story
+      .appendChild(
+        section
+      );
+
+
+      return;
+
+    }
+
+
+    /* CAPÍTULOS NORMALES */
+
+    const section =
+    document.createElement(
+      "section"
+    );
+
+    section.className =
+      "chapter";
+
+    section.id =
+      `capitulo${index+1}`;
+
+    section.style
+    .backgroundImage =
+
+      `url("assets/${chapter.image}.webp")`;
+
+
+    section.innerHTML =
+    `
+
+      ${
+
+        chapter.barrier
+
+        ?
+
+        `<div class="magic-barrier">
+        </div>`
+
+        :
+
+        ""
+
+      }
+
+
+      <div class="chapter-content reveal">
+
+
+        <div class="chapter-number">
+
+          Capítulo ${number}
+
+        </div>
+
+
+        <h2>
+
+          ${chapter.title}
+
+        </h2>
+
+
+        ${
+
+          chapter.paragraphs
+
+          .map(
+
+            paragraph =>
+
+            `<p>${paragraph}</p>`
+
+          )
+
+          .join("")
+
+        }
+
+
+        ${
+
+          chapter.quote
+
+          ?
+
+          `
+
+          <div class="quote">
+
+            ${chapter.quote}
+
+          </div>
+
+          `
+
+          :
+
+          ""
+
+        }
+
+
+        ${
+
+          chapter.location
+
+          ?
+
+          `
+
+          <div class="location">
+
+            ${chapter.location}
+
+          </div>
+
+          `
+
+          :
+
+          ""
+
+        }
+
+
+      </div>
+
+    `;
+
+
+    story
+    .appendChild(
+      section
+    );
+
+  }
+
+);
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToSection(
+  id
+){
+
+  const element =
+  document
+  .getElementById(
+    id
+  );
+
+
+  if(
+    element
+  ){
+
+    element
+    .scrollIntoView({
+
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+const revealObserver =
+
+new IntersectionObserver(
+
+(entries)=>{
+
+  entries
+  .forEach(
+
+    entry=>{
+
+      if(
+        entry.isIntersecting
+      ){
+
+        entry
+        .target
+        .classList
+        .add(
+          "visible"
+        );
+
+      }
+
+    }
+
+  );
+
+},
+
+{
+
+  threshold:.13
+
+}
+
+);
+
+
+document
+.querySelectorAll(
+  ".reveal"
+)
+.forEach(
+
+  element =>
+
+  revealObserver
+  .observe(
+    element
+  )
+
+);
+
+
+/* =========================================================
+   BARRA DE LECTURA
+========================================================= */
+
+window
+.addEventListener(
+
+"scroll",
+
+()=>{
+
+  const root =
+  document
+  .documentElement;
+
+
+  const current =
+  root.scrollTop;
+
+
+  const max =
+  root.scrollHeight
+  -
+  root.clientHeight;
+
+
+  const value =
+
+  max > 0
+
+  ?
+
+  current
+  /
+  max
+  *
+  100
+
+  :
+
+  0;
+
+
+  document
+  .getElementById(
+    "progressBar"
+  )
+  .style
+  .width =
+
+    value
+    +
+    "%";
+
+}
+
+);
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+const audio =
+document
+.getElementById(
+  "ambientAudio"
+);
+
+
+const audioButton =
+document
+.getElementById(
+  "audioButton"
+);
+
+
+let audioPlaying =
+false;
+
+
+audioButton
+.addEventListener(
+
+"click",
+
+async()=>{
+
+  try{
+
+
+    if(
+      !audioPlaying
+    ){
+
+      audio.volume =
+        .28;
+
+
+      await
+      audio.play();
+
+
+      audioPlaying =
+        true;
+
+
+      audioButton
+      .textContent =
+        "♫ Sonando";
+
+    }
+
+
+    else{
+
+      audio.pause();
+
+
+      audioPlaying =
+        false;
+
+
+      audioButton
+      .textContent =
+        "♫ Ambiente";
+
+    }
+
+
+  }
+
+  catch(error){
+
+    audioButton
+    .textContent =
+      "♫ Reintentar";
+
+  }
+
+}
+
+);
+
+
+/* =========================================================
+   DATOS DEL MAPA
+========================================================= */
+
+const places = {
+
+
+  aethrion:{
+
+    title:
+      "Aethrion",
+
+    image:
+      "assets/aethrion.webp",
+
+    description:
+
+      `La capital de Cetrios.
+
+      El corazón político
+      y cultural del reino.
+
+      Durante el despertar
+      de las entidades,
+      Aethrion se convierte
+      en el principal punto
+      de resistencia.`
+
+  },
+
+
+  lomira:{
+
+    title:
+      "La Roca del Guardián · Lomira",
+
+    image:
+      "assets/guardian-lomira.webp",
+
+    description:
+
+      `Lomira forma parte
+      de La Roca del Guardián.
+
+      Bajo estas estructuras
+      se encuentra
+      la cárcel de los
+      Ecos Prohibidos.
+
+      Aquí comienza
+      la catástrofe
+      cuando las entidades
+      consiguen escapar.`
+
+  },
+
+
+  kael:{
+
+    title:
+      "Desierto de Kael",
+
+    image:
+      "assets/kael.webp",
+
+    description:
+
+      `Una región árida
+      de arena,
+      piedra
+      y ruinas antiguas.
+
+      Darian,
+      Nyra
+      y Lorik
+      atraviesan Kael
+      buscando la entrada
+      hacia el lugar
+      donde duerme Murmex.`
+
+  },
+
+
+  tronox:{
+
+    title:
+      "Islas de Tronox",
+
+    image:
+      "assets/tronox.webp",
+
+    description:
+
+      `Tronox Mayor
+      y Tronox Menor
+      se encuentran
+      frente a la costa oriental
+      del Continente Central.
+
+      Vertiem procede
+      de la isla menor
+      y llega a Aethrion
+      durante la crisis.`
+
+  }
+
+};
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+const modal =
+document
+.getElementById(
+  "placeModal"
+);
+
+
+const modalImage =
+document
+.getElementById(
+  "modalImage"
+);
+
+
+const modalTitle =
+document
+.getElementById(
+  "modalTitle"
+);
+
+
+const modalDescription =
+document
+.getElementById(
+  "modalDescription"
+);
+
+
+document
+.querySelectorAll(
+  ".map-pin"
+)
+.forEach(
+
+  pin=>{
+
+    pin
+    .addEventListener(
+
+      "click",
+
+      ()=>{
+
+        const place =
+
+        places[
+          pin.dataset.place
+        ];
+
+
+        if(
+          !place
+        ){
+
+          return;
+
+        }
+
+
+        modalImage
+        .style
+        .backgroundImage =
+
+        `
+
+        linear-gradient(
+          180deg,
+          transparent,
+          rgba(0,0,0,.35)
+        ),
+
+        url("${place.image}")
+
+        `;
+
+
+        modalTitle
+        .textContent =
+          place.title;
+
+
+        modalDescription
+        .textContent =
+          place.description;
+
+
+        modal
+        .classList
+        .add(
+          "open"
+        );
+
+      }
+
+    );
+
+  }
+
+);
+
+
+/* =========================================================
+   CERRAR MODAL
+========================================================= */
+
+function closeModal(){
+
+  modal
+  .classList
+  .remove(
+    "open"
+  );
+
+}
+
+
+document
+.getElementById(
+  "modalClose"
+)
+.addEventListener(
+
+  "click",
+
+  closeModal
+
+);
+
+
+modal
+.addEventListener(
+
+"click",
+
+event=>{
+
+  if(
+    event.target
+    ===
+    modal
+  ){
+
+    closeModal();
+
+  }
+
+}
+
+);
+
+
+window
+.addEventListener(
+
+"keydown",
+
+event=>{
+
+  if(
+    event.key
+    ===
+    "Escape"
+  ){
+
+    closeModal();
+
+  }
+
+}
+
+);
+
+</script>
+
+</body>
+
+</html>
